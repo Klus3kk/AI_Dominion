@@ -1,0 +1,61 @@
+{%extends 'base.html'%}
+{%block content%}
+
+Należysz do drużyny <em>{{user.team}}</em>
+<p>Dotychczasowe zgłoszenia:
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th rowspan="3">Id</th>
+        <th rowspan="3">Czas</th>
+        <th rowspan="3">Status</th>
+        <th rowspan="3">Źródła</th>
+        <th colspan="8">Wyniki rozgrywek</th>
+    </tr>
+    <tr>
+        {%for opponent in opponents%}
+        <th colspan="2">{{opponent}}</th>
+        {%endfor%}
+    </tr>
+    <tr>
+        {%for opponent in opponents%}
+        <th>Pierwszy</th>
+        <th>Drugi</th>
+        {%endfor%}
+    </tr>
+    </thead>
+    <tbody>
+    {%for submission in submissions%}
+    <tr>
+        <td>{{submission.id}}</td>
+        <td>{{submission.time}}</td>
+        <td>{{submission.status}}</td>
+        <td>&nbsp;</td>
+        {%for opponent in opponents%}
+        {%for pos in [0,1]%}
+        {%if submission.results[opponent][pos].won %}
+        <td class='success'>Wygrana</td>
+        {%elif submission.results[opponent][pos].lost %}
+        <td class='danger' title="{{submission.results[opponent][pos].error}}">Przegrana</td>
+        {%elif submission.results[opponent][pos].tie %}
+        <td class='warning'>Remis</td>
+        {%else%}
+        <td>&nbsp;</td>
+        {%endif%}
+        {%endfor%}
+        {%endfor%}
+    </tr>
+    {%endfor%}
+    </tbody>
+</table>
+
+<!-- TODO conditional on deadline and not impersonating -->
+<p>
+<form method="post" enctype="multipart/form-data" role="form">
+    <div class="form-group">
+        <label for="sources">Zgłoś nową wersję (jeden plik źródłowy):</label>
+        <input class="form-control" type="file" id="sources" name="sources">
+        <input type="submit" class="btn btn-default" name="new_submission">
+    </div>
+</form>
+{%endblock%}

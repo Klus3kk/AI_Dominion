@@ -1,0 +1,14 @@
+[project]
+name = "frontend"
+version = "2.0.0"
+dependencies = [
+    "flask",
+    "mysqlclient"
+]
+[build-system]
+requires = [
+    "pytest",
+    "testcontainers",
+    "setuptools>=61.0"
+]
+build-backend = "setuptools.build_meta"

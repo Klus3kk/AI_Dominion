@@ -1,0 +1,61 @@
+{%extends 'base.html'%}
+{%block content%}
+<p>Użytkownicy:<br>
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th>Imię i nazwisko</th>
+        <th>e-mail</th>
+        <th>Zespół</th>
+        <th>Termin zajęć</th>
+        <th>Liczba zgłoszeń</th>
+        <th>Opcje</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for student in students %}
+    <tr>
+        <td>{{student.name}}</td>
+        <td>{{student.email}}</td>
+        <td>
+            <form action="{{url_for('impersonate', team=student.team)}}" method="post">
+                <button type="submit" class="btn btn-link">{{student.team}}</button>
+            </form>
+        </td>
+        <td>{{student.classes}}</td>
+        <td>{{student.submissions}}</td>
+        <td>
+            <form action="{{url_for('detach', uid=student.uid)}}" method="POST">
+                <button type="submit" class="btn btn-danger">Detach</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</p>
+<p>Zgłoszenia:<br>
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th>Drużyna</th>
+        <th>Osoby</th>
+        <th>Id</th>
+        <th>Czas</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for submission in submissions %}
+    <tr>
+        <td>{{submission.team}}</td>
+        <td>{{submission.students}}</td>
+        <td>{{submission.id}}</td>
+        <td>{{submission.time}}</td>
+        <td>{{submission.status}}</td>
+    </tr>
+    {%endfor%}
+    </tbody>
+</table>
+</p>
+{%endblock%}
